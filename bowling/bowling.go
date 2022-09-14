@@ -21,6 +21,7 @@ func newGame(GameName string) Game {
 }
 
 func (e *Game) roll(NumOfPinsDown uint) {
+	e.Score += NumOfPinsDown
 }
 
 func (e *Game) score() uint {
