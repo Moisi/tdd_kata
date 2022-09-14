@@ -41,3 +41,22 @@ func TestScoreAfterTwoRollBonus(t *testing.T) {
 		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score2, want2)
 	}
 }
+
+func TestScoreAfterSpare(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(1)
+	g.roll(9)
+
+	g.roll(1)
+	g.roll(1)
+
+	// 10 for pins in the first frame + 1 bonus + 2 of the second frame
+	// frame0: 10 + bonus
+	// frame1: 1+1 = 2. but only 1 is bonus
+	want := uint(10 + 1 + 2)
+	score := g.score()
+	if score != want {
+		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+	}
+}
