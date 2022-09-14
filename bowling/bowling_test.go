@@ -19,3 +19,25 @@ func TestScoreOfFreshGame(t *testing.T) {
 	}
 }
 
+func TestScoreAfterOneRollNoBonus(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(1)
+	want := uint(1)
+	score := g.score()
+	if score != want {
+		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+	}
+}
+
+func TestScoreAfterTwoRollBonus(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+	g.roll(1)
+	g.roll(1)
+
+	want2 := uint(2)
+	score2 := g.score()
+	if score2 != want2 {
+		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score2, want2)
+	}
+}
