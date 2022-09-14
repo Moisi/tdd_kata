@@ -20,9 +20,9 @@ func newGame(GameName string) Game {
 	return g
 }
 
-func (e Game) roll(NumOfPinsDown uint) {
+func (e *Game) roll(NumOfPinsDown uint) {
 }
 
-func (e Game) score() uint {
+func (e *Game) score() uint {
 	return e.Score
 }
