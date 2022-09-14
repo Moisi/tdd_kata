@@ -5,6 +5,6 @@ import (
 )
 
 func TestGameInit(t *testing.T) {
-	g := newGame("tmpName", 1, 2, 3)
+	g := newGame("tmpName")
 	g.printGame()
 }

@@ -15,8 +15,9 @@ func (e Game) printGame() {
 	fmt.Printf("%s %d %d %d\n", e.GameName, e.FrameNumber, e.RollNumber, e.Score)
 }
 
-func newGame(GameName string, FrameNumber uint, RollNumber uint, Score uint) Game {
-	g := Game{GameName, FrameNumber, RollNumber, Score}
+
+func newGame(GameName string) Game {
+	g := Game{GameName, 0, 0, 0}
 	return g
 }
 
