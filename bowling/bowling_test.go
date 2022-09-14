@@ -169,3 +169,23 @@ func TestScoreTwoRegsAfterStrike(t *testing.T) {
 		t.Fatalf("score = %d, want = %d", score, want)
 	}
 }
+
+// flip Strike->Spare. to same but to Spare->Strike
+func TestScoreSpareStrikeReg(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(1)
+	g.roll(9)
+
+	g.roll(10)
+
+	g.roll(1)
+	g.roll(1)
+
+	// 10 + bonus (10) + 10 + bonus (2) + 2
+	want := uint(34)
+	score := g.score()
+	if score != want {
+		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+	}
+}
