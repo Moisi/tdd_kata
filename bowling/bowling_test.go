@@ -98,3 +98,74 @@ func TestScoreTwoNonSpareAfterSpare(t *testing.T) {
 		t.Fatalf("score = %d, want = %d", score, want)
 	}
 }
+
+func TestScoreAfterStrike(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(10)
+
+	g.roll(1)
+	g.roll(1)
+
+	want := uint(10 + 1 + 1 + 2)
+	score := g.score()
+	if score != want {
+		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+	}
+}
+
+func TestScoreAfterDoubleStrike(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(10)
+
+	g.roll(10)
+
+	g.roll(1)
+	g.roll(1)
+
+	// 10 + bonus (10) + 10 + bonus (2) + 2
+	want := uint(34)
+	score := g.score()
+	if score != want {
+		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+	}
+}
+
+func TestScoreStrikeThenSpareThenRegular(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(10)
+
+	g.roll(9)
+	g.roll(1)
+
+	g.roll(1)
+	g.roll(1)
+
+	// 10 + b(10) + 10 + b(1) + 2
+	want := uint(33)
+	score := g.score()
+	if score != want {
+		t.Fatalf("score = %d, want = %d", score, want)
+	}
+}
+
+func TestScoreTwoRegsAfterStrike(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(10)
+
+	g.roll(1)
+	g.roll(1)
+
+	g.roll(1)
+	g.roll(1)
+
+	// 10 + b(2) + 2 + 2
+	want := uint(16)
+	score := g.score()
+	if score != want {
+		t.Fatalf("score = %d, want = %d", score, want)
+	}
+}
