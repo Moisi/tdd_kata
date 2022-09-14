@@ -1,13 +1,13 @@
-package main 
+package main
 
 import (
-    "testing"
+	"testing"
 )
 
-func TestGameInit(t *testing.T){
-    g := Game {	GameName: "tmpName",
-    		FrameNumber: 1,
-		RollNumber: 2,
-		Score: 3, }
-    g.printGame()
+func TestGameInit(t *testing.T) {
+	g := Game{GameName: "tmpName",
+		FrameNumber: 1,
+		RollNumber:  2,
+		Score:       3}
+	g.printGame()
 }
