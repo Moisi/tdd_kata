@@ -12,6 +12,7 @@ type Game struct {
 	RollNumber  uint
 	Score       uint
 	IsSpare     bool
+	IsStrike    bool
 	PrevRoll    uint
 }
 
@@ -20,7 +21,7 @@ func (e Game) printGame() {
 }
 
 func newGame(GameName string) Game {
-	g := Game{GameName, 0, 0, 0, false, NIL_PREVROLL}
+	g := Game{GameName, 0, 0, 0, false, false, NIL_PREVROLL}
 	g.IsSpare = false
 	return g
 }
@@ -34,19 +35,27 @@ func (e *Game) roll(NumOfPinsDown uint) {
 		// add the run after spare
 		e.Score += NumOfPinsDown
 		e.IsSpare = false
+	} else if e.IsStrike {
+		e.Score += NumOfPinsDown
 	}
 
 	// prepare state for next roll:
 	if NumOfPinsDown+e.PrevRoll == 10 {
 		// congrats we have a spare:
 		e.IsSpare = true
+		e.IsStrike = false
 		e.PrevRoll = NIL_PREVROLL
+	} else if e.PrevRoll == NIL_PREVROLL && NumOfPinsDown == 10 {
+		// found a strike:
+		e.IsStrike = true
 	} else if e.PrevRoll == NIL_PREVROLL {
 		// PrevRoll == NIL_PREVROLL == 100, meaning this is first roll in frame.
 		// need to save it for second roll
 		// might do this in a different way (via some state) but for now.
 		e.PrevRoll = NumOfPinsDown
 	} else {
+		// this was second roll. make sure IsStrike = false;
+		e.IsStrike = false
 		e.PrevRoll = NIL_PREVROLL
 	}
 }
