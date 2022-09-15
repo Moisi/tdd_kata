@@ -15,7 +15,7 @@ func TestScoreOfFreshGame(t *testing.T) {
 	want := uint(0)
 	score := g.score()
 	if score != want {
-		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+		t.Fatalf("score() = %d, want = %d", score, want)
 	}
 }
 
@@ -26,7 +26,7 @@ func TestScoreAfterOneRollNoBonus(t *testing.T) {
 	want := uint(1)
 	score := g.score()
 	if score != want {
-		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+		t.Fatalf("score() = %d, want = %d", score, want)
 	}
 }
 
@@ -38,7 +38,7 @@ func TestScoreAfterTwoRollBonus(t *testing.T) {
 	want2 := uint(2)
 	score2 := g.score()
 	if score2 != want2 {
-		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score2, want2)
+		t.Fatalf("score() = %d, want = %d", score2, want2)
 	}
 }
 
@@ -57,7 +57,7 @@ func TestScoreAfterSpare(t *testing.T) {
 	want := uint(10 + 1 + 2)
 	score := g.score()
 	if score != want {
-		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+		t.Fatalf("score() = %d, want = %d", score, want)
 	}
 }
 
@@ -110,7 +110,7 @@ func TestScoreAfterStrike(t *testing.T) {
 	want := uint(10 + 1 + 1 + 2)
 	score := g.score()
 	if score != want {
-		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+		t.Fatalf("score() = %d, want = %d", score, want)
 	}
 }
 
@@ -186,6 +186,6 @@ func TestScoreSpareStrikeReg(t *testing.T) {
 	want := uint(34)
 	score := g.score()
 	if score != want {
-		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
+		t.Fatalf("score() = %d, want = %d", score, want)
 	}
 }
