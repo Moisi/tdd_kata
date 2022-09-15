@@ -9,6 +9,18 @@ func TestGameInit(t *testing.T) {
 	g.printGame()
 }
 
+func TestPerfectGame(t *testing.T) {
+	g := newGame("PerfectGame")
+	want := uint(300)
+	for i := 0; i <= 10; i++ {
+		g.roll(10)
+	}
+	score := g.score()
+	if score != want {
+		t.Fatalf("score() = %d, want = %d", score, want)
+	}
+}
+
 func TestScoreOfFreshGame(t *testing.T) {
 	// this is bad practice of TDD. because this test never failed first
 	g := newGame("ScoreOfFreshGame")
@@ -114,6 +126,23 @@ func TestScoreAfterStrike(t *testing.T) {
 	}
 }
 
+func TestScoreAfterTripleStrike(t *testing.T) {
+	g := newGame("ScoreOfFreshGame")
+
+	g.roll(10)
+	g.roll(10)
+	g.roll(10)
+
+	g.roll(1)
+	g.roll(1)
+
+	// 10 + bonus (24) + 10 + bonus (12) + 10Bonus(2) + 2
+	want := uint(10 + 24 + 10 + 12 + 12 + 2)
+	score := g.score()
+	if score != want {
+		t.Fatalf("Score() = %d, want = %d", score, want)
+	}
+}
 func TestScoreAfterDoubleStrike(t *testing.T) {
 	g := newGame("ScoreOfFreshGame")
 
