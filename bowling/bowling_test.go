@@ -4,6 +4,11 @@ import (
 	"testing"
 )
 
+func TestFrame(t *testing.T) {
+	f := newFrame()
+	f.printFrame()
+}
+
 func TestGameInit(t *testing.T) {
 	g := newGame("tmpName")
 	g.printGame()

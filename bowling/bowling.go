@@ -6,6 +6,30 @@ import (
 
 const NIL_PREVROLL = 100
 
+type Frame struct {
+	Rolls [3]int
+}
+
+func newFrame() Frame {
+	f := Frame{[3]int{0, 0, 0}}
+	return f
+}
+
+func (f Frame) IsSpare() bool {
+	return f.Rolls[0]+f.Rolls[1] == 10
+}
+
+func (f Frame) IsStrike() bool {
+	return f.Rolls[0] == 10
+}
+
+func (f Frame) printFrame() {
+	fmt.Println("Rolls: ", f.Rolls)
+	fmt.Println("IsSpare: ", f.IsSpare())
+	fmt.Println("IsStrike: ", f.IsStrike())
+
+}
+
 type Game struct {
 	GameName    string
 	FrameNumber uint
@@ -14,6 +38,8 @@ type Game struct {
 	IsSpare     bool
 	IsStrike    bool
 	PrevRoll    uint
+
+	FrameArray [10]Frame
 }
 
 func (e Game) printGame() {
@@ -21,7 +47,11 @@ func (e Game) printGame() {
 }
 
 func newGame(GameName string) Game {
-	g := Game{GameName, 0, 0, 0, false, false, NIL_PREVROLL}
+	g := Game{GameName, 0, 0, 0, false, false, NIL_PREVROLL,
+		[10]Frame{newFrame(), newFrame(), newFrame(),
+			newFrame(), newFrame(), newFrame(),
+			newFrame(), newFrame(), newFrame(),
+			newFrame()}}
 	g.IsSpare = false
 	return g
 }
