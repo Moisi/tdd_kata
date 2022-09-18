@@ -17,7 +17,7 @@ func TestGameInit(t *testing.T) {
 func TestPerfectGame(t *testing.T) {
 	g := newGame("PerfectGame")
 	want := uint(300)
-	for i := 0; i <= 10; i++ {
+	for i := 0; i <= 11; i++ {
 		g.roll(10)
 	}
 	score := g.score()
