@@ -141,8 +141,8 @@ func TestScoreAfterTripleStrike(t *testing.T) {
 	g.roll(1)
 	g.roll(1)
 
-	// 10 + bonus (24) + 10 + bonus (12) + 10Bonus(2) + 2
-	want := uint(10 + 24 + 10 + 12 + 12 + 2)
+	// 10 + bonus (20) + 10 + bonus (11) + 10 + Bonus(2) + 2
+	want := uint(10 + 20 + 10 + 11 + 10 + 2 + 2)
 	score := g.score()
 	if score != want {
 		t.Fatalf("Score() = %d, want = %d", score, want)
@@ -152,14 +152,13 @@ func TestScoreAfterDoubleStrike(t *testing.T) {
 	g := newGame("ScoreOfFreshGame")
 
 	g.roll(10)
-
 	g.roll(10)
 
 	g.roll(1)
 	g.roll(1)
 
-	// 10 + bonus (10) + 10 + bonus (2) + 2
-	want := uint(34)
+	// 10 + bonus (11) + 10 + bonus (2) + 2
+	want := uint(10 + 11 + 10 + 2 + 2)
 	score := g.score()
 	if score != want {
 		t.Fatalf("ScoreOfFreshGame = %d, want = %d", score, want)
