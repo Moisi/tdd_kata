@@ -64,8 +64,12 @@ func (e *Game) roll(NumOfPinsDown uint) {
 	currentFrame := e.FramesArray[e.FrameIndex]
 	e.FramesArray[e.FrameIndex].Rolls[e.RollIndex] = int(NumOfPinsDown)
 
-	if e.FrameIndex == 9 && currentFrame.Rolls[0]+currentFrame.Rolls[1] == 10 {
-		// last frame + strike | spare
+	if e.RollIndex < 2 && NumOfPinsDown == 10 && e.FrameIndex == 9 {
+		// case of strike in roll1 or roll2. we'll use the third roll
+		// in the same frame:
+		e.RollIndex++
+	} else if e.FrameIndex == 9 && currentFrame.Rolls[0]+currentFrame.Rolls[1] == 10 {
+		// case we got a spare in last frame
 		e.RollIndex = 2
 	} else if e.RollIndex == 0 && NumOfPinsDown == 10 {
 		// strike, jump to next Frame
@@ -79,26 +83,46 @@ func (e *Game) roll(NumOfPinsDown uint) {
 	}
 }
 
-func (e *Game) getBonus(i int, SorS bool) int {
-	if i == 10 {
-		// this is last frame, we store next roll in:
-		// Rolls[2]:
-		return e.FramesArray[i-1].Rolls[2]
+func (e *Game) getBonusForLastFrame(frame int, SorS bool) int {
+	/*
+		hacky workaround for edge case.
+		we have 3 optins for bonus in 10th frame:
+		1. spare <- get bonus From Rolls[2]
+		2. Rolls[0] && Rolls[1] are strike <- bonus on Rolls[2]
+		3. Strike on Roll[0] only <- bonus on Rolls[1] + [2]
+	*/
+	if e.FramesArray[frame].Rolls[1]+e.FramesArray[frame].Rolls[0] == 10 {
+		// case 1:
+		return e.FramesArray[frame].Rolls[2]
+	} else if e.FramesArray[frame].Rolls[1] == 10 && e.FramesArray[frame].Rolls[0] == 10 {
+		// case 2:
+		return e.FramesArray[frame].Rolls[1]
+	} else /* if e.FramesArray[frame].Rolls[0] == 10*/ {
+		// case 3:
+		return e.FramesArray[frame].Rolls[1] +
+			e.FramesArray[frame].Rolls[2]
+	}
+}
+
+func (e *Game) getBonusForFrame(frame int, SorS bool) int {
+	if frame == 9 {
+		return e.getBonusForLastFrame(frame, SorS)
 	} else {
-		f := e.FramesArray[i]
+		nextFrame := e.FramesArray[frame+1]
 		if SorS {
 			// strike - return sum
 			// of next two rolls
-			if f.Rolls[0] == 10 {
-				// next two rolls are in two frames:
-				return 10 + e.getBonus(i+1, false)
+			if nextFrame.Rolls[0] == 10 {
+				// found another strike, thus return 10 plus
+				// next rolls which will the in next frame:
+				return 10 + e.getBonusForFrame(frame+1, false)
 			} else {
 				// two are in same frame:
-				return f.Rolls[0] + f.Rolls[1]
+				return nextFrame.Rolls[0] + nextFrame.Rolls[1]
 			}
 		} else {
 			// spare - return next roll
-			return f.Rolls[0]
+			return nextFrame.Rolls[0]
 		}
 	}
 
@@ -110,9 +134,9 @@ func (e *Game) score() uint {
 		score += f.Rolls[0]
 		score += f.Rolls[1]
 		if f.Rolls[0] == 10 {
-			score += e.getBonus(i+1, true)
+			score += e.getBonusForFrame(i, true)
 		} else if f.Rolls[0]+f.Rolls[1] == 10 {
-			score += e.getBonus(i+1, false)
+			score += e.getBonusForFrame(i, false)
 		}
 	}
 	return uint(score)
